@@ -6,19 +6,6 @@
 #define MAX_ROWS 100
 #define MAX_COLS 8000
 
-typedef __int128_t int128;
-
-void print_u128(int128 n) {
-    if (n == 0) { printf("0"); return; }
-    char buf[128];
-    int i = 0;
-    while (n > 0) {
-        buf[i++] = (char)((n % 10) + '0');
-        n /= 10;
-    }
-    while (i--) putchar(buf[i]);
-}
-
 void solve() {
     static char grid[MAX_ROWS][MAX_COLS];
     int r = 0, max_c = 0;
@@ -32,8 +19,8 @@ void solve() {
 
     if (r < 2) return;
 
-    int128 grand_total = 0;
-    int128 values[MAX_COLS];
+    unsigned long long grand_total = 0;
+    unsigned long long values[MAX_COLS];
     int v_idx = 0;
     char *operators = grid[r - 1];
 
@@ -53,13 +40,13 @@ void solve() {
             continue;
         }
 
-        values[v_idx++] = (int128)strtoull(val_str, NULL, 10);
+        values[v_idx++] = strtoull(val_str, NULL, 10);
 
         char op = (col < (int)strlen(operators)) ? operators[col] : ' ';
 
         if (op == '+' || op == '*') {
             if (v_idx > 0) {
-                int128 res = (op == '+') ? 0 : 1;
+                unsigned long long res = (op == '+') ? 0 : 1;
                 for (int k = 0; k < v_idx; k++) {
                     if (op == '+') res += values[k];
                     else res *= values[k];
@@ -70,9 +57,7 @@ void solve() {
         }
     }
 
-    printf("Grand Total: ");
-    print_u128(grand_total);
-    printf("\n");
+    printf("Grand Total: %llu\n", grand_total);
 }
 
 int main() {
